@@ -76,7 +76,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 %{apxs} -e -a -n %{mod_name} %{_pkglibdir}/lib%{mod_name}.so 1>&2
-if [ -f /etc/httpd/httpd.conf ] && ! grep -q "^Include.*mod_dav.conf" /etc/httpd/httpd.conf; then
+if [ -f /etc/httpd/httpd.conf ] && ! grep -q "^Include.*mod_jk.conf" /etc/httpd/httpd.conf; then
 	echo "Include /etc/httpd/mod_jk.conf" >> /etc/httpd/httpd.conf
 fi
 if [ -f /var/lock/subsys/httpd ]; then
