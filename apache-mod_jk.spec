@@ -9,6 +9,7 @@ Release:	1
 License:	Apache
 Group:		Networking/Daemons
 Source0:	http://jakarta.apache.org/builds/jakarta-tomcat-connectors/jk/release/v1.2.1/src/jakarta-tomcat-connectors-jk-%{version}-src.tar.gz
+# Source0-md5:	2070a5d0283d7377522090868ddf4697
 Source1:	%{name}.conf
 URL:		http://jakarta.apache.org/builds/jakarta-tomcat-connectors/jk/doc/
 BuildRequires:	%{apxs}
