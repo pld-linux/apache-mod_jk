@@ -13,9 +13,10 @@ Source0:	http://jakarta.apache.org/builds/jakarta-tomcat-connectors/jk/release/v
 Source1:	%{name}.conf
 URL:		http://jakarta.apache.org/builds/jakarta-tomcat-connectors/jk/doc/
 BuildRequires:	%{apxs}
-BuildRequires:	apache(EAPI)-devel >= %{apache_version}
-BuildRequires:	jakarta-ant >= 1.5.1
-BuildRequires:	jakarta-tomcat
+Requires:       apache(modules-api) = %{apache_modules_api}
+BuildRequires:	libtool
+BuildRequires:	automake
+BuildRequires:	autoconf
 Requires(post,preun):	%{apxs}
 Requires(post,preun):	grep
 Requires(preun):	fileutils
@@ -40,38 +41,30 @@ Tomcat-Apache obs³uguj±c± komunikacjê miêdzy Tomcatem a Apachem.
 %setup -q -n jakarta-tomcat-connectors-jk-%{version}-src
 
 %build
-cd jk
+cd jk/native
 
 if [ -z "$JAVA_HOME" ]; then
         JAVA_HOME=/usr/lib/java
 fi
-ANT_HOME=%{_javalibdir}
-export JAVA_HOME ANT_HOME
+export JAVA_HOME
+./buildconf.sh
 
-cat > build.properties << EOF
-#tomcat5.home=%{_libdir}/tomcat
-tomcat40.home=%{_tomcatdir}
-#tomcat41.home==%{_libdir}/tomcat
-#apache2.home=/opt/apache2
-apache13.home=%{_libdir}
-apr.home=\${apache2.home}
-apr.include=%{_includedir}/apache
-apr-util.include=%{_includedir}/apache
-apr.lib=%{_libdir}
-apr-util.lib=%{_libdir}
-#apache2.lib=%{_libdir}
-so.debug=false
-so.optimize=true
-so.profile=false
-EOF
+%configure \
+	--enable-EAPI \
+	--with-apxs=%{_sbindir}/apxs \
+	--with-java-home=${JAVA_HOME}
 
-ant native
+%{__make} \
+	LIBTOOL=%{_bindir}/libtool
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir}/httpd,/var/lock/mod_jk}
 
-install lib%{mod_name}.so $RPM_BUILD_ROOT%{_pkglibdir}
+%{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT \
+	libexecdir=$RPM_BUILD_ROOT%{_pkglibdir}
+
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd/mod_jk.conf
 
 %clean
