@@ -17,8 +17,8 @@ BuildRequires:	libtool
 BuildRequires:	automake
 BuildRequires:	autoconf
 BuildRequires:	perl-base
-BuildRequires:  rpmbuild(macros) >= 1.120
 %if %{_apache2}
+BuildRequires:  rpmbuild(macros) >= 1.120
 PreReq:         apache >= 2.0.40
 Requires:       apache(modules-api) = %{apache_modules_api}
 %else
