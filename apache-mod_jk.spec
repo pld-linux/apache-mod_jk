@@ -12,9 +12,12 @@ Source0:	http://jakarta.apache.org/builds/jakarta-tomcat-connectors/jk/release/v
 Source1:	%{name}.conf
 URL:		http://jakarta.apache.org/builds/jakarta-tomcat-connectors/jk/doc/
 BuildRequires:	%{apxs}
-BuildRequires:	libtool
-BuildRequires:	automake
+BuildRequires:	apache-devel >= 2.0.40
+BuildRequires:	apr-devel
+BuildRequires:	apr-util-devel
 BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool
 BuildRequires:	perl-base
 BuildRequires:	rpmbuild(macros) >= 1.120
 PreReq:		apache >= 2.0.40
@@ -52,7 +55,7 @@ export JAVA_HOME
 	--with-java-home=${JAVA_HOME}
 
 %{__make} \
-	EXTRA_CFLAGS="`apr-config --includes` `apu-config --includes`"
+	EXTRA_CFLAGS="`apr-1-config --includes` `apu-1-config --includes`"
 
 %install
 rm -rf $RPM_BUILD_ROOT
