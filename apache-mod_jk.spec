@@ -1,5 +1,5 @@
 %define		_apache2	%(rpm -q apache-devel 2> /dev/null | grep -Eq '\\-2\\.[0-9]+\\.' && echo 1 || echo 0)
-%define 	apxs		/usr/sbin/apxs
+%define		apxs		/usr/sbin/apxs
 Summary:	Apache module that handles communication between Tomcat and Apache
 Summary(pl):	Modu³ Apache'a obs³uguj±cy komunikacjê miêdzy Tomcatem a Apachem
 %define		mod_name	jk
@@ -18,14 +18,14 @@ BuildRequires:	automake
 BuildRequires:	autoconf
 BuildRequires:	perl-base
 %if %{_apache2}
-BuildRequires:  rpmbuild(macros) >= 1.120
-PreReq:         apache >= 2.0.40
-Requires:       apache(modules-api) = %{apache_modules_api}
+BuildRequires:	rpmbuild(macros) >= 1.120
+PreReq:		apache >= 2.0.40
+Requires:	apache(modules-api) = %{apache_modules_api}
 %else
-PreReq:         apache(EAPI) < 2.0.0
-PreReq:         apache(EAPI) >= 1.3.9
-Requires(post,preun):   %{apxs}
-Requires(post,preun):   %{__perl}
+PreReq:		apache(EAPI) < 2.0.0
+PreReq:		apache(EAPI) >= 1.3.9
+Requires(post,preun):	%{apxs}
+Requires(post,preun):	%{__perl}
 Requires(post,preun):	grep
 Requires(preun):	fileutils
 %endif
@@ -33,8 +33,8 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	jakarta-tomcat-connectors-jk
 
 %define		_pkglibdir	%(%{apxs} -q LIBEXECDIR)
-%define         _javalibdir     /usr/share/java
-%define         _tomcatdir      %{_libdir}/tomcat
+%define		_javalibdir	/usr/share/java
+%define		_tomcatdir	%{_libdir}/tomcat
 
 %description
 JK is a replacement to the elderly mod_jserv. It was a completely new
@@ -52,7 +52,7 @@ Tomcat-Apache obs³uguj±c± komunikacjê miêdzy Tomcatem a Apachem.
 cd jk/native
 
 if [ -z "$JAVA_HOME" ]; then
-        JAVA_HOME=/usr/lib/java
+	JAVA_HOME=/usr/lib/java
 fi
 export JAVA_HOME
 ./buildconf.sh
@@ -85,7 +85,6 @@ install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd/mod_jk.conf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
-
 
 %post
 %if ! %{_apache2}
