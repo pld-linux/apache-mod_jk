@@ -1,7 +1,6 @@
 %define 	apxs	/usr/sbin/apxs
 Summary:	Apache module that handles communication between Tomcat and Apache
 Summary(pl):	Modu³ Apache'a obs³uguj±cy komunikacjê miêdzy Tomcatem a Apachem
-%define		apache_version	1.3.27
 %define		mod_name	jk
 Name:		apache-mod_%{mod_name}
 Version:	1.2.4
@@ -17,10 +16,10 @@ Requires:       apache(modules-api) = %{apache_modules_api}
 BuildRequires:	libtool
 BuildRequires:	automake
 BuildRequires:	autoconf
+BuildRequires:	perl-base
 Requires(post,preun):	%{apxs}
 Requires(post,preun):	grep
 Requires(preun):	fileutils
-Requires:	apache(EAPI) >= %{apache_version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	jakarta-tomcat-connectors-jk
 
@@ -51,7 +50,7 @@ export JAVA_HOME
 
 %configure \
 	--enable-EAPI \
-	--with-apxs=%{_sbindir}/apxs \
+	--with-apxs=%{apxs} \
 	--with-java-home=${JAVA_HOME}
 
 %{__make} \
@@ -61,8 +60,11 @@ export JAVA_HOME
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir}/httpd,/var/lock/mod_jk}
 
+cd jk/native
+
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
+	APXS="%{apxs} -S LIBEXECDIR=$RPM_BUILD_ROOT$(%{apxs} -q LIBEXECDIR)" \
 	libexecdir=$RPM_BUILD_ROOT%{_pkglibdir}
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd/mod_jk.conf
@@ -93,7 +95,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc README CHANGES INSTALL LICENSE.html
+%doc jk/native/{README,CHANGES.txt} jk/docs/*
 %config(noreplace) %{_sysconfdir}/httpd/mod_jk.conf
 %attr(755,root,root) %{_pkglibdir}/*
 %attr(750,http,http) /var/lock/mod_jk
