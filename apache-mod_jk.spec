@@ -70,7 +70,7 @@ if [ -f /etc/httpd/httpd.conf ] && ! grep -q "^Include.*mod_dav.conf" /etc/httpd
 	echo "Include /etc/httpd/mod_dav.conf" >> /etc/httpd/httpd.conf
 fi
 if [ -f /var/lock/subsys/httpd ]; then
-	%{_sysconfdir}/rc.d/init.d/httpd restart 1>&2
+	/etc/rc.d/init.d/httpd restart 1>&2
 fi
 
 %preun
