@@ -4,12 +4,12 @@ Summary(pl):	Modu³ Apache'a obs³uguj±cy komunikacjê miêdzy Tomcatem a Apachem
 %define		apache_version	1.3.27
 %define		mod_name	jk
 Name:		apache-mod_%{mod_name}
-Version:	1.2.1
+Version:	1.2.3
 Release:	0.1
 License:	Apache
 Group:		Networking/Daemons
-Source0:	http://jakarta.apache.org/builds/jakarta-tomcat-connectors/jk/release/v1.2.1/src/jakarta-tomcat-connectors-jk-%{version}-src.tar.gz
-# Source0-md5:	2070a5d0283d7377522090868ddf4697
+Source0:	http://jakarta.apache.org/builds/jakarta-tomcat-connectors/jk/release/v%{version}/src/jakarta-tomcat-connectors-jk-%{version}-src.tar.gz
+# Source0-md5:	4c2c2a4e6a6ad8a912afaffbff173227
 Source1:	%{name}.conf
 URL:		http://jakarta.apache.org/builds/jakarta-tomcat-connectors/jk/doc/
 BuildRequires:	%{apxs}
