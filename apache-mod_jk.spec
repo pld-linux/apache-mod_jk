@@ -17,8 +17,8 @@ Source1:	%{name}.conf
 URL:		http://jakarta.apache.org/builds/jakarta-tomcat-connectors/jk/doc/
 BuildRequires:	%{apxs}
 BuildRequires:	apache-devel >= 2.0.40
-BuildRequires:	apr-devel
-BuildRequires:	apr-util-devel
+BuildRequires:	apr-devel >= 1:1.0
+BuildRequires:	apr-util-devel >= 1:1.0
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	libtool
@@ -26,8 +26,8 @@ BuildRequires:	perl-base
 BuildRequires:	rpmbuild(macros) >= 1.120
 PreReq:		apache >= 2.0.40
 Requires:	apache(modules-api) = %{apache_modules_api}
-BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	jakarta-tomcat-connectors-jk
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_pkglibdir	%(%{apxs} -q LIBEXECDIR)
 %define		_sysconfdir	%(%{apxs} -q SYSCONFDIR)
@@ -65,9 +65,7 @@ export JAVA_HOME
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir}/httpd.conf,/var/{lock/mod_jk,log/httpd}}
 
-cd jk/native
-
-%{__make} install \
+%{__make} -C jk/native install \
 	DESTDIR=$RPM_BUILD_ROOT \
 	APXS="%{apxs} -S LIBEXECDIR=$RPM_BUILD_ROOT%{_pkglibdir}" \
 	libexecdir=$RPM_BUILD_ROOT%{_pkglibdir}
@@ -84,7 +82,11 @@ rm -rf $RPM_BUILD_ROOT
 if [ -f /var/lock/subsys/httpd ]; then
 	/etc/rc.d/init.d/httpd restart 1>&2
 fi
-touch /var/log/httpd/mod_jk.log
+if [ ! -f /var/log/httpd/mod_jk.log ]; then
+	umask 027
+	touch /var/log/httpd/mod_jk.log
+	chown root:logs /var/log/httpd/mod_jk.log
+fi
 
 %preun
 if [ "$1" = "0" ]; then
@@ -99,4 +101,4 @@ fi
 %config(noreplace) %{_sysconfdir}/httpd.conf/80_mod_jk.conf
 %attr(755,root,root) %{_pkglibdir}/*
 %attr(750,http,http) /var/lock/mod_jk
-%attr(640,root,logs) %ghost %config(noreplace) /var/log/httpd/mod_jk.log
+%attr(640,root,logs) %ghost /var/log/httpd/mod_jk.log
