@@ -11,11 +11,13 @@ Group:		Networking/Daemons
 Source0:	http://jakarta.apache.org/builds/jakarta-tomcat-connectors/jk/release/v1.2.1/src/jakarta-tomcat-connectors-jk-%{version}-src.tar.gz
 Source1:	%{name}.conf
 URL:		http://jakarta.apache.org/builds/jakarta-tomcat-connectors/jk/doc/
-Prereq:		%{_sbindir}/apxs
 BuildRequires:	%{apxs}
 BuildRequires:	apache(EAPI)-devel	>= %{apache_version}
 BuildRequires:	jakarta-ant >= 1.5.1
 BuildRequires:	jakarta-tomcat
+Requires(post,preun):	%{apxs}
+Requires(post,preun):	grep
+Requires(preun):	fileutils
 Requires:	apache(EAPI)		>= %{apache_version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	jakarta-tomcat-connectors-jk
