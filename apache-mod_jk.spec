@@ -62,8 +62,7 @@ export JAVA_HOME
 	--with-apxs=%{apxs} \
 	--with-java-home=${JAVA_HOME}
 
-%{__make} \
-	LIBTOOL=%{_bindir}/libtool
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -88,7 +87,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 %if ! %{_apache2}
-%{apxs} -e -a -n %{mod_name} %{_pkglibdir}/lib%{mod_name}.so 1>&2
+%{apxs} -e -a -n %{mod_name} %{_pkglibdir}/mod_%{mod_name}.so 1>&2
 if [ -f /etc/httpd/httpd.conf ] && ! grep -q "^Include.*mod_jk.conf" /etc/httpd/httpd.conf; then
 	echo "Include /etc/httpd/mod_jk.conf" >> /etc/httpd/httpd.conf
 fi
@@ -100,7 +99,7 @@ fi
 %preun
 if [ "$1" = "0" ]; then
 %if ! %{_apache2}
-	%{apxs} -e -A -n %{mod_name} %{_pkglibdir}/lib%{mod_name}.so 1>&2
+	%{apxs} -e -A -n %{mod_name} %{_pkglibdir}/mod_%{mod_name}.so 1>&2
 	umask 027
 	grep -v "^Include.*mod_jk.conf" /etc/httpd/httpd.conf > \
 		/etc/httpd/httpd.conf.tmp
