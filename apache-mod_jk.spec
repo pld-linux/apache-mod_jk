@@ -1,14 +1,17 @@
+# TODO:
+# - fix looking for /usr/lib/apache/lib/apache/build/config_vars.mk....
+# /TODO
 %define		mod_name	jk
 %define		apxs		/usr/sbin/apxs
 Summary:	Apache module that handles communication between Tomcat and Apache
 Summary(pl):	Modu³ Apache'a obs³uguj±cy komunikacjê miêdzy Tomcatem a Apachem
 Name:		apache-mod_%{mod_name}
-Version:	1.2.4
-Release:	1
+Version:	1.2.8
+Release:	0.9
 License:	Apache
 Group:		Networking/Daemons
-Source0:	http://jakarta.apache.org/builds/jakarta-tomcat-connectors/jk/release/v%{version}/src/jakarta-tomcat-connectors-jk-%{version}-src.tar.gz
-# Source0-md5:	9641a826b87e64692377161215cfd5e1
+Source0:	http://www.apache.org/dist/jakarta/tomcat-connectors/jk/source/jk-%{version}/jakarta-tomcat-connectors-%{version}-src.tar.gz
+# Source0-md5:	eb579c47f8dd71e526d7561c919ce06d
 Source1:	%{name}.conf
 URL:		http://jakarta.apache.org/builds/jakarta-tomcat-connectors/jk/doc/
 BuildRequires:	%{apxs}
@@ -38,7 +41,7 @@ JK jest zamiennikiem starego mod_jserv. Jest ca³kowicie now± wtyczk±
 Tomcat-Apache obs³uguj±c± komunikacjê miêdzy Tomcatem a Apachem.
 
 %prep
-%setup -q -n jakarta-tomcat-connectors-jk-%{version}-src
+%setup -q -n jakarta-tomcat-connectors-%{version}-src
 
 %build
 cd jk/native
@@ -88,7 +91,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc jk/native/{README,CHANGES.txt} jk/docs/*
+%doc jk/native/{README,CHANGES.txt}
 %config(noreplace) %{_sysconfdir}/httpd.conf/80_mod_jk.conf
 %attr(755,root,root) %{_pkglibdir}/*
 %attr(750,http,http) /var/lock/mod_jk
