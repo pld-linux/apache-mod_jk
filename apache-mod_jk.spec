@@ -7,7 +7,7 @@ Version:	1.2.1
 Release:	1
 License:	Apache
 Group:		Networking/Daemons
-Source0:	http://jakarta.apache.org/builds/jakarta-tomcat-connectors/jk/release/v1.2.1/src/jakarta-tomcat-connectors-jk-1.2.1-src.tar.gz
+Source0:	http://jakarta.apache.org/builds/jakarta-tomcat-connectors/jk/release/v1.2.1/src/jakarta-tomcat-connectors-jk-%{version}-src.tar.gz
 Source1:	%{name}.conf
 URL:		http://jakarta.apache.org/builds/jakarta-tomcat-connectors/jk/doc/
 Prereq:		%{_sbindir}/apxs
@@ -24,7 +24,9 @@ Obsoletes:	jakarta-tomcat-connectors-jk
 %define         _tomcatdir      %{_libdir}/tomcat
 
 %description
-JK  is a replacement to the elderly mod_jserv. It was a completely new Tomcat-Apache plug-in that handles the communication between Tomcat and Apache.
+JK is a replacement to the elderly mod_jserv. It was a completely new
+Tomcat-Apache plug-in that handles the communication between Tomcat
+and Apache.
 
 %prep
 %setup -q -n jakarta-tomcat-connectors-jk-%{version}-src
@@ -33,11 +35,11 @@ JK  is a replacement to the elderly mod_jserv. It was a completely new Tomcat-Ap
 cd jk
 
 if [ -z "$JAVA_HOME" ]; then
-        JAVA_HOME=/usr/lib/java
+        JAVA_HOME=%{_libdir}/java
 fi
 ANT_HOME=%{_javalibdir}
 export JAVA_HOME ANT_HOME
-	
+
 cat > build.properties << EOF
 #tomcat5.home=%{_libdir}/tomcat
 tomcat40.home=%{_tomcatdir}
@@ -59,10 +61,10 @@ ant native
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_pkglibdir},/etc/httpd,/var/lock/mod_dav}
+install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir}/httpd,/var/lock/mod_dav}
 
 install lib%{mod_name}.so $RPM_BUILD_ROOT%{_pkglibdir}/
-install %{SOURCE1} $RPM_BUILD_ROOT/etc/httpd/mod_dav.conf
+install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd/mod_dav.conf
 
 %post
 %{apxs} -e -a -n %{mod_name} %{_pkglibdir}/lib%{mod_name}.so 1>&2
@@ -90,6 +92,6 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc README CHANGES INSTALL LICENSE.html
-%config(noreplace) /etc/httpd/mod_dav.conf
+%config(noreplace) %{_sysconfdir}/httpd/mod_dav.conf
 %attr(755,root,root) %{_pkglibdir}/*
 %attr(750,http,http) /var/lock/mod_dav
