@@ -1,5 +1,6 @@
 # TODO:
 # - fix looking for /usr/lib/apache/lib/apache/build/config_vars.mk....
+# - logrotate file
 # /TODO
 %define		mod_name	jk
 %define		apxs		/usr/sbin/apxs
@@ -62,7 +63,7 @@ export JAVA_HOME
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir}/httpd.conf,/var/lock/mod_jk}
+install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir}/httpd.conf,/var/{lock/mod_jk,log/httpd}}
 
 cd jk/native
 
@@ -74,6 +75,8 @@ cd jk/native
 echo "LoadModule jk_module	%{_pkglibdir}/mod_jk.so" > $RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf/80_mod_jk.conf
 cat %{SOURCE1} >> $RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf/80_mod_jk.conf
 
+touch $RPM_BUILD_ROOT/var/log/httpd/mod_jk.log
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -81,6 +84,7 @@ rm -rf $RPM_BUILD_ROOT
 if [ -f /var/lock/subsys/httpd ]; then
 	/etc/rc.d/init.d/httpd restart 1>&2
 fi
+touch /var/log/httpd/mod_jk.log
 
 %preun
 if [ "$1" = "0" ]; then
@@ -95,3 +99,4 @@ fi
 %config(noreplace) %{_sysconfdir}/httpd.conf/80_mod_jk.conf
 %attr(755,root,root) %{_pkglibdir}/*
 %attr(750,http,http) /var/lock/mod_jk
+%attr(640,root,logs) %ghost %config(noreplace) /var/log/httpd/mod_jk.log
