@@ -4,7 +4,7 @@ Summary(pl):	Modu³ Apache'a obs³uguj±cy komunikacjê miêdzy Tomcatem a Apachem
 %define		apache_version	1.3.27
 %define		mod_name	jk
 Name:		apache-mod_%{mod_name}
-Version:	1.2.3
+Version:	1.2.4
 Release:	0.1
 License:	Apache
 Group:		Networking/Daemons
