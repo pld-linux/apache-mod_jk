@@ -41,7 +41,7 @@ Tomcat-Apache obs³uguj±c± komunikacjê miêdzy Tomcatem a Apachem.
 cd jk/native
 
 if [ -z "$JAVA_HOME" ]; then
-	JAVA_HOME=/usr/lib/java
+	JAVA_HOME=%{_libdir}/java
 fi
 export JAVA_HOME
 ./buildconf.sh
