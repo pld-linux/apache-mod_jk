@@ -13,7 +13,6 @@ Source0:	http://jakarta.apache.org/builds/jakarta-tomcat-connectors/jk/release/v
 Source1:	%{name}.conf
 URL:		http://jakarta.apache.org/builds/jakarta-tomcat-connectors/jk/doc/
 BuildRequires:	%{apxs}
-Requires:       apache(modules-api) = %{apache_modules_api}
 BuildRequires:	libtool
 BuildRequires:	automake
 BuildRequires:	autoconf
