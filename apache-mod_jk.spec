@@ -17,6 +17,7 @@ BuildRequires:	libtool
 BuildRequires:	automake
 BuildRequires:	autoconf
 BuildRequires:	perl-base
+BuildRequires:  rpmbuild(macros) >= 1.120
 Requires(post,preun):	%{apxs}
 Requires(post,preun):	grep
 Requires(preun):	fileutils
