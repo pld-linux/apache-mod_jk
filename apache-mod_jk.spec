@@ -7,12 +7,12 @@
 Summary:	Apache module that handles communication between Tomcat and Apache
 Summary(pl):	Modu³ Apache'a obs³uguj±cy komunikacjê miêdzy Tomcatem a Apachem
 Name:		apache-mod_%{mod_name}
-Version:	1.2.8
-Release:	0.9
+Version:	1.2.13
+Release:	0.1
 License:	Apache
 Group:		Networking/Daemons
 Source0:	http://www.apache.org/dist/jakarta/tomcat-connectors/jk/source/jk-%{version}/jakarta-tomcat-connectors-%{version}-src.tar.gz
-# Source0-md5:	eb579c47f8dd71e526d7561c919ce06d
+# Source0-md5:	028e39a84b81847b62d07ed9cd9427ae
 Source1:	%{name}.conf
 URL:		http://jakarta.apache.org/builds/jakarta-tomcat-connectors/jk/doc/
 BuildRequires:	%{apxs}
@@ -51,6 +51,10 @@ if [ -z "$JAVA_HOME" ]; then
 	JAVA_HOME=%{_libdir}/java
 fi
 export JAVA_HOME
+
+# ugly speed hack
+sed -i 's#`.*exp_installbuilddir`#/usr/lib/apache/build/#' configure.in
+
 ./buildconf.sh
 
 %configure \
@@ -97,7 +101,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc jk/native/{README,CHANGES.txt}
+%doc jk/native/{README,CHANGES}
 %config(noreplace) %{_sysconfdir}/httpd.conf/80_mod_jk.conf
 %attr(755,root,root) %{_pkglibdir}/*
 %attr(750,http,http) /var/lock/mod_jk
