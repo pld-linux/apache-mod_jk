@@ -7,12 +7,12 @@
 Summary:	Apache module that handles communication between Tomcat and Apache
 Summary(pl):	Modu³ Apache'a obs³uguj±cy komunikacjê miêdzy Tomcatem a Apachem
 Name:		apache-mod_%{mod_name}
-Version:	1.2.13
+Version:	1.2.14.1
 Release:	0.1
 License:	Apache
 Group:		Networking/Daemons
-Source0:	http://www.apache.org/dist/jakarta/tomcat-connectors/jk/source/jk-%{version}/jakarta-tomcat-connectors-%{version}-src.tar.gz
-# Source0-md5:	028e39a84b81847b62d07ed9cd9427ae
+Source0:	http://www.apache.org/dist/jakarta/tomcat-connectors/jk/source/jk-1.2.14/jakarta-tomcat-connectors-%{version}-src.tar.gz
+# Source0-md5:	41a90c633088e0f1ba422c10546a028a
 Source1:	%{name}.conf
 URL:		http://jakarta.apache.org/builds/jakarta-tomcat-connectors/jk/doc/
 BuildRequires:	%{apxs}
