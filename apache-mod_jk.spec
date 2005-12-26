@@ -1,7 +1,5 @@
 # TODO:
-# - fix looking for /usr/lib/apache/lib/apache/build/config_vars.mk....
 # - logrotate file
-# /TODO
 %define		mod_name	jk
 %define		apxs		/usr/sbin/apxs
 Summary:	Apache module that handles communication between Tomcat and Apache
@@ -14,6 +12,7 @@ Group:		Networking/Daemons
 Source0:	http://www.apache.org/dist/jakarta/tomcat-connectors/jk/source/jk-1.2.14/jakarta-tomcat-connectors-%{version}-src.tar.gz
 # Source0-md5:	41a90c633088e0f1ba422c10546a028a
 Source1:	%{name}.conf
+Patch0:		%{name}-libtool.patch
 URL:		http://jakarta.apache.org/builds/jakarta-tomcat-connectors/jk/doc/
 BuildRequires:	%{apxs}
 BuildRequires:	apache-devel >= 2.0.40
@@ -24,13 +23,12 @@ BuildRequires:	automake
 BuildRequires:	libtool
 BuildRequires:	perl-base
 BuildRequires:	rpmbuild(macros) >= 1.120
-PreReq:		apache >= 2.0.40
 Requires:	apache(modules-api) = %{apache_modules_api}
 Obsoletes:	jakarta-tomcat-connectors-jk
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_pkglibdir	%(%{apxs} -q LIBEXECDIR)
-%define		_sysconfdir	%(%{apxs} -q SYSCONFDIR)
+%define		_pkglibdir	%(%{apxs} -q LIBEXECDIR 2>/dev/null)
+%define		_sysconfdir	%(%{apxs} -q SYSCONFDIR 2>/dev/null)
 
 %description
 JK is a replacement to the elderly mod_jserv. It was a completely new
@@ -43,6 +41,7 @@ Tomcat-Apache obs³uguj±c± komunikacjê miêdzy Tomcatem a Apachem.
 
 %prep
 %setup -q -n jakarta-tomcat-connectors-%{version}-src
+%patch0 -p1
 
 %build
 cd jk/native
@@ -52,8 +51,8 @@ if [ -z "$JAVA_HOME" ]; then
 fi
 export JAVA_HOME
 
-# ugly speed hack
-sed -i 's#`.*exp_installbuilddir`#/usr/lib/apache/build/#' configure.in
+# temp hack for broken apxs (fixed in apache-apxs-2.2.0-6.1)
+sed -i -e 's#`.*exp_installbuilddir`#%{_prefix}/lib/apache/build/#' configure.in
 
 ./buildconf.sh
 
@@ -74,9 +73,7 @@ install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir}/httpd.conf,/var/{lock/mo
 	APXS="%{apxs} -S LIBEXECDIR=$RPM_BUILD_ROOT%{_pkglibdir}" \
 	libexecdir=$RPM_BUILD_ROOT%{_pkglibdir}
 
-echo "LoadModule jk_module	%{_pkglibdir}/mod_jk.so" > $RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf/80_mod_jk.conf
-cat %{SOURCE1} >> $RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf/80_mod_jk.conf
-
+install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf/80_mod_jk.conf
 touch $RPM_BUILD_ROOT/var/log/httpd/mod_jk.log
 
 %clean
@@ -102,7 +99,7 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc jk/native/{README,CHANGES}
-%config(noreplace) %{_sysconfdir}/httpd.conf/80_mod_jk.conf
-%attr(755,root,root) %{_pkglibdir}/*
-%attr(750,http,http) /var/lock/mod_jk
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/httpd.conf/*_mod_%{mod_name}.conf
+%attr(755,root,root) %{_pkglibdir}/*.so
+%attr(770,root,http) /var/lock/mod_jk
 %attr(640,root,logs) %ghost /var/log/httpd/mod_jk.log
