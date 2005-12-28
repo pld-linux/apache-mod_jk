@@ -15,7 +15,7 @@ Source1:	%{name}.conf
 Patch0:		%{name}-libtool.patch
 URL:		http://tomcat.apache.org/connectors-doc/
 BuildRequires:	%{apxs}
-BuildRequires:	apache-devel >= 2.2.0-6.1
+BuildRequires:	apache-devel >= 2.2.0-6.8
 BuildRequires:	apr-devel >= 1:1.0
 BuildRequires:	apr-util-devel >= 1:1.0
 BuildRequires:	autoconf
@@ -60,9 +60,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir}/httpd.conf,/var/{lock/mod_jk,log/httpd}}
 
 %{__make} -C jk/native install \
-	DESTDIR=$RPM_BUILD_ROOT \
-	APXS="%{apxs} -S LIBEXECDIR=$RPM_BUILD_ROOT%{_pkglibdir}" \
-	libexecdir=$RPM_BUILD_ROOT%{_pkglibdir}
+	DESTDIR=$RPM_BUILD_ROOT
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf/80_mod_jk.conf
 touch $RPM_BUILD_ROOT/var/log/httpd/mod_jk.log
@@ -71,13 +69,13 @@ touch $RPM_BUILD_ROOT/var/log/httpd/mod_jk.log
 rm -rf $RPM_BUILD_ROOT
 
 %post
-if [ -f /var/lock/subsys/httpd ]; then
-	/etc/rc.d/init.d/httpd restart 1>&2
-fi
 if [ ! -f /var/log/httpd/mod_jk.log ]; then
 	umask 027
 	touch /var/log/httpd/mod_jk.log
 	chown root:logs /var/log/httpd/mod_jk.log
+fi
+if [ -f /var/lock/subsys/httpd ]; then
+	/etc/rc.d/init.d/httpd restart 1>&2
 fi
 
 %preun
