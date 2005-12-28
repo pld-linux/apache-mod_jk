@@ -16,8 +16,6 @@ Patch0:		%{name}-libtool.patch
 URL:		http://tomcat.apache.org/connectors-doc/
 BuildRequires:	%{apxs}
 BuildRequires:	apache-devel >= 2.2.0-6.8
-BuildRequires:	apr-devel >= 1:1.0
-BuildRequires:	apr-util-devel >= 1:1.0
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	libtool
@@ -57,7 +55,7 @@ cd jk/native
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir}/httpd.conf,/var/{lock/mod_jk,log/httpd}}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir}/httpd.conf,/var/{lock/mod_jk,log/httpd}}
 
 %{__make} -C jk/native install \
 	DESTDIR=$RPM_BUILD_ROOT
