@@ -5,17 +5,17 @@
 Summary:	Apache module that handles communication between Tomcat and Apache
 Summary(pl):	Modu³ Apache'a obs³uguj±cy komunikacjê miêdzy Tomcatem a Apachem
 Name:		apache-mod_%{mod_name}
-Version:	1.2.14.1
+Version:	1.2.15
 Release:	0.1
-License:	Apache
+License:	Apache License 2.0
 Group:		Networking/Daemons
-Source0:	http://www.apache.org/dist/jakarta/tomcat-connectors/jk/source/jk-1.2.14/jakarta-tomcat-connectors-%{version}-src.tar.gz
-# Source0-md5:	41a90c633088e0f1ba422c10546a028a
+Source0:	http://www.apache.org/dist/tomcat/tomcat-connectors/jk/source/jk-%{version}/jakarta-tomcat-connectors-%{version}-src.tar.gz
+# Source0-md5:	b815a666329f7de097775113547539e0
 Source1:	%{name}.conf
 Patch0:		%{name}-libtool.patch
-URL:		http://jakarta.apache.org/builds/jakarta-tomcat-connectors/jk/doc/
+URL:		http://tomcat.apache.org/connectors-doc/
 BuildRequires:	%{apxs}
-BuildRequires:	apache-devel >= 2.0.40
+BuildRequires:	apache-devel >= 2.2.0-6.1
 BuildRequires:	apr-devel >= 1:1.0
 BuildRequires:	apr-util-devel >= 1:1.0
 BuildRequires:	autoconf
@@ -45,24 +45,15 @@ Tomcat-Apache obs³uguj±c± komunikacjê miêdzy Tomcatem a Apachem.
 
 %build
 cd jk/native
-
-if [ -z "$JAVA_HOME" ]; then
-	JAVA_HOME=%{_libdir}/java
-fi
-export JAVA_HOME
-
-# temp hack for broken apxs (fixed in apache-apxs-2.2.0-6.1)
-sed -i -e 's#`.*exp_installbuilddir`#%{_prefix}/lib/apache/build/#' configure.in
-
-./buildconf.sh
-
+%{__libtoolize}
+%{__aclocal}
+%{__autoheader}
+%{__automake}
+%{__autoconf}
 %configure \
-	--enable-EAPI \
 	--with-apxs=%{apxs} \
-	--with-java-home=${JAVA_HOME}
-
-%{__make} \
-	EXTRA_CFLAGS="`apr-1-config --includes` `apu-1-config --includes`"
+	--with-java-home="${JAVA_HOME:-%{_libdir}/java}"
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
