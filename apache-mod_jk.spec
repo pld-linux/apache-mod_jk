@@ -55,7 +55,7 @@ cd jk/native
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sysconfdir}/httpd.conf,/var/{lock/mod_jk,log/httpd}}
+install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir}/httpd.conf,/var/{lock/mod_jk,log/httpd}}
 
 %{__make} -C jk/native install \
 	DESTDIR=$RPM_BUILD_ROOT
