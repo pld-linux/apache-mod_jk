@@ -1,0 +1,5 @@
+- updated to 1.2.15
+- call autotools from spec
+- removed uneeded hacks
+- EAPI is for apache 1.3
+- rel 0.1
