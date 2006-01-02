@@ -6,13 +6,14 @@ Summary:	Apache module that handles communication between Tomcat and Apache
 Summary(pl):	Modu³ Apache'a obs³uguj±cy komunikacjê miêdzy Tomcatem a Apachem
 Name:		apache-mod_%{mod_name}
 Version:	1.2.15
-Release:	0.1
+Release:	0.2
 License:	Apache License 2.0
 Group:		Networking/Daemons
 Source0:	http://www.apache.org/dist/tomcat/tomcat-connectors/jk/source/jk-%{version}/jakarta-tomcat-connectors-%{version}-src.tar.gz
 # Source0-md5:	b815a666329f7de097775113547539e0
 Source1:	%{name}.conf
 Patch0:		%{name}-libtool.patch
+Patch1:		%{name}-apxs.patch
 URL:		http://tomcat.apache.org/connectors-doc/
 BuildRequires:	%{apxs}
 BuildRequires:	apache-devel >= 2.2.0-6.8
@@ -40,6 +41,7 @@ Tomcat-Apache obs³uguj±c± komunikacjê miêdzy Tomcatem a Apachem.
 %prep
 %setup -q -n jakarta-tomcat-connectors-%{version}-src
 %patch0 -p1
+%patch1 -p1
 
 %build
 cd jk/native
@@ -85,7 +87,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc jk/native/{README,CHANGES}
+%doc jk/native/{README,CHANGES,NEWS}
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/httpd.conf/*_mod_%{mod_name}.conf
 %attr(755,root,root) %{_pkglibdir}/*.so
 %attr(770,root,http) /var/lock/mod_jk
