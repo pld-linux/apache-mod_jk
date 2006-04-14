@@ -76,7 +76,7 @@ if [ ! -f /var/log/httpd/mod_jk.log ]; then
 fi
 %service -q httpd restart
 
-%preun
+%postun
 if [ "$1" = "0" ]; then
 	%service -q httpd restart
 fi
