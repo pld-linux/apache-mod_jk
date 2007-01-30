@@ -1,11 +1,11 @@
---- jakarta-tomcat-connectors-1.2.15-src/jk/native/apache-2.0/Makefile.in~	2005-12-28 16:19:42.000000000 +0200
-+++ jakarta-tomcat-connectors-1.2.15-src/jk/native/apache-2.0/Makefile.in	2006-01-02 15:12:19.000000000 +0200
+--- jakarta-tomcat-connectors-1.2.15-src/native/apache-2.0/Makefile.in~	2005-12-28 16:19:42.000000000 +0200
++++ jakarta-tomcat-connectors-1.2.15-src/native/apache-2.0/Makefile.in	2006-01-02 15:12:19.000000000 +0200
 @@ -71,7 +71,7 @@
  install_dynamic:
  	@echo ""
  	@echo "Installing files to Apache Modules Directory..."
 -	$(APXS) -i mod_jk.la
-+	$(APXS) -S DESTDIR=$(DESTDIR) -i mod_jk.la
++	$(APXS) -i -S DESTDIR=$(DESTDIR) mod_jk.la
  	@echo ""
  	@echo "Please be sure to arrange ${APACHE_DIR}/conf/httpd.conf..."
  	@echo ""
