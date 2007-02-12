@@ -3,7 +3,7 @@
 %define		mod_name	jk
 %define		apxs		/usr/sbin/apxs
 Summary:	Apache module that handles communication between Tomcat and Apache
-Summary(pl.UTF-8):   Moduł Apache'a obsługujący komunikację między Tomcatem a Apachem
+Summary(pl.UTF-8):	Moduł Apache'a obsługujący komunikację między Tomcatem a Apachem
 Name:		apache-mod_%{mod_name}
 Version:	1.2.20
 Release:	0.1
