@@ -3,7 +3,7 @@
 %define		mod_name	jk
 %define		apxs		/usr/sbin/apxs
 Summary:	Apache module that handles communication between Tomcat and Apache
-Summary(pl):	Modu³ Apache'a obs³uguj±cy komunikacjê miêdzy Tomcatem a Apachem
+Summary(pl.UTF-8):   ModuÅ‚ Apache'a obsÅ‚ugujÄ…cy komunikacjÄ™ miÄ™dzy Tomcatem a Apachem
 Name:		apache-mod_%{mod_name}
 Version:	1.2.20
 Release:	0.1
@@ -34,9 +34,9 @@ JK is a replacement to the elderly mod_jserv. It was a completely new
 Tomcat-Apache plug-in that handles the communication between Tomcat
 and Apache.
 
-%description -l pl
-JK jest zamiennikiem starego mod_jserv. Jest ca³kowicie now± wtyczk±
-Tomcat-Apache obs³uguj±c± komunikacjê miêdzy Tomcatem a Apachem.
+%description -l pl.UTF-8
+JK jest zamiennikiem starego mod_jserv. Jest caÅ‚kowicie nowÄ… wtyczkÄ…
+Tomcat-Apache obsÅ‚ugujÄ…cÄ… komunikacjÄ™ miÄ™dzy Tomcatem a Apachem.
 
 %prep
 %setup -q -n tomcat-connectors-%{version}-src
