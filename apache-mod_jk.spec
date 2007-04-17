@@ -5,12 +5,12 @@
 Summary:	Apache module that handles communication between Tomcat and Apache
 Summary(pl.UTF-8):	Moduł Apache'a obsługujący komunikację między Tomcatem a Apachem
 Name:		apache-mod_%{mod_name}
-Version:	1.2.21
+Version:	1.2.22
 Release:	0.1
 License:	Apache License 2.0
 Group:		Networking/Daemons
-Source0: 	http://www.apache.org/dist/tomcat/tomcat-connectors/jk/source/tomcat-connectors-%{version}-src.tar.gz
-# Source0-md5:	ed65157ecbea7d3569de08611aa160eb
+Source0:	http://www.apache.org/dist/tomcat/tomcat-connectors/jk/source/tomcat-connectors-%{version}-src.tar.gz
+# Source0-md5:	35e1ebf9dbdeaa9f78c668d8729e4073
 Source1:	%{name}.conf
 Patch0:		%{name}-libtool.patch
 Patch1:		%{name}-apxs.patch
@@ -23,6 +23,7 @@ BuildRequires:	libtool
 BuildRequires:	perl-base
 BuildRequires:	rpmbuild(macros) >= 1.268
 Requires:	apache(modules-api) = %{apache_modules_api}
+Obsoletes:	apache-mod_jk2
 Obsoletes:	jakarta-tomcat-connectors-jk
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -40,7 +41,7 @@ Tomcat-Apache obsługującą komunikację między Tomcatem a Apachem.
 
 %prep
 %setup -q -n tomcat-connectors-%{version}-src
-#%patch0 -p1
+%patch0 -p1
 %patch1 -p1
 
 %build
