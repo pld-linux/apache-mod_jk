@@ -6,7 +6,7 @@ Summary:	Apache module that handles communication between Tomcat and Apache
 Summary(pl.UTF-8):	Moduł Apache'a obsługujący komunikację między Tomcatem a Apachem
 Name:		apache-mod_%{mod_name}
 Version:	1.2.25
-Release:	0.1
+Release:	1
 License:	Apache License 2.0
 Group:		Networking/Daemons
 Source0:	http://www.apache.org/dist/tomcat/tomcat-connectors/jk/source/tomcat-connectors-%{version}-src.tar.gz
@@ -19,9 +19,10 @@ BuildRequires:	apache-apxs >= 2.2
 BuildRequires:	apache-devel >= 2.2.0-6.8
 BuildRequires:	autoconf
 BuildRequires:	automake
+BuildRequires:	jpackage-utils
 BuildRequires:	libtool
 BuildRequires:	perl-base
-BuildRequires:	rpmbuild(macros) >= 1.268
+BuildRequires:	rpmbuild(macros) >= 1.300
 Requires:	apache(modules-api) = %{apache_modules_api}
 Obsoletes:	apache-mod_jk2
 Obsoletes:	jakarta-tomcat-connectors-jk
@@ -53,7 +54,7 @@ cd native
 %{__autoconf}
 %configure \
 	--with-apxs=%{apxs} \
-	--with-java-home="${JAVA_HOME:-%{_libdir}/java}"
+	--with-java-home="%{java_home}"
 %{__make}
 
 %install
