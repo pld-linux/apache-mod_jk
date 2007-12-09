@@ -15,7 +15,7 @@ Source1:	%{name}.conf
 Patch0:		%{name}-libtool.patch
 Patch1:		%{name}-apxs.patch
 URL:		http://tomcat.apache.org/connectors-doc/
-BuildRequires:	apache-apxs >= 2.2
+BuildRequires:	%{apxs}
 BuildRequires:	apache-devel >= 2.2.0-6.8
 BuildRequires:	autoconf
 BuildRequires:	automake
