@@ -7,7 +7,7 @@ Summary(pl.UTF-8):	Moduł Apache'a obsługujący komunikację między Tomcatem a
 Name:		apache-mod_%{mod_name}
 Version:	1.2.26
 Release:	1
-License:	Apache License 2.0
+License:	Apache v2.0
 Group:		Networking/Daemons
 Source0:	http://www.apache.org/dist/tomcat/tomcat-connectors/jk/source/tomcat-connectors-%{version}-src.tar.gz
 # Source0-md5:	feaec245136bc4d99a9dde95a00ea93c
