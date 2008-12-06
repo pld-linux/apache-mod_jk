@@ -5,18 +5,17 @@
 Summary:	Apache module that handles communication between Tomcat and Apache
 Summary(pl.UTF-8):	Moduł Apache'a obsługujący komunikację między Tomcatem a Apachem
 Name:		apache-mod_%{mod_name}
-Version:	1.2.26
+Version:	1.2.27
 Release:	1
 License:	Apache v2.0
 Group:		Networking/Daemons/HTTP
 Source0:	http://www.apache.org/dist/tomcat/tomcat-connectors/jk/source/tomcat-connectors-%{version}-src.tar.gz
-# Source0-md5:	feaec245136bc4d99a9dde95a00ea93c
+# Source0-md5:	a15cc9e3813ef5b081c7de10e6a1fbed
 Source1:	%{name}.conf
-Patch0:		%{name}-libtool.patch
-Patch1:		%{name}-apxs.patch
+Patch0:		%{name}-apxs.patch
 URL:		http://tomcat.apache.org/connectors-doc/
 BuildRequires:	%{apxs}
-BuildRequires:	apache-devel >= 2.2.0-6.8
+BuildRequires:	apache-devel >= 2.2.10
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	jpackage-utils
@@ -43,7 +42,6 @@ Tomcat-Apache obsługującą komunikację między Tomcatem a Apachem.
 %prep
 %setup -q -n tomcat-connectors-%{version}-src
 %patch0 -p1
-%patch1 -p1
 
 %build
 cd native
@@ -59,12 +57,12 @@ cd native
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir}/httpd.conf,/var/{lock/mod_jk,log/httpd}}
+install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir}/conf.d,/var/{lock/mod_jk,log/httpd}}
 
 %{__make} -C native install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf/80_mod_jk.conf
+install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/conf.d/80_mod_jk.conf
 touch $RPM_BUILD_ROOT/var/log/httpd/mod_jk.log
 
 %clean
@@ -86,7 +84,7 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc native/{README.txt,CHANGES,NEWS}
-%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/httpd.conf/*_mod_%{mod_name}.conf
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/conf.d/*_mod_%{mod_name}.conf
 %attr(755,root,root) %{_pkglibdir}/*.so
 %attr(770,root,http) /var/lock/mod_jk
 %attr(640,root,logs) %ghost /var/log/httpd/mod_jk.log
