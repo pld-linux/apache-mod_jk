@@ -1,0 +1,11 @@
+--- tomcat-connectors-1.2.28-src/native/common/Makefile.in~	2007-09-02 22:32:11.000000000 +0300
++++ tomcat-connectors-1.2.28-src/native/common/Makefile.in	2009-04-21 17:24:08.934875294 +0300
+@@ -25,7 +25,7 @@
+ 
+ top_builddir = ..
+ 
+-LIBTOOL = @LIBTOOL@
++LIBTOOL = @LIBTOOL@ --tag=CC
+ CC = @CC@
+ 
+ OEXT=.lo
