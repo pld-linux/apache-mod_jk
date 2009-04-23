@@ -13,6 +13,7 @@ Source0:	http://www.apache.org/dist/tomcat/tomcat-connectors/jk/source/tomcat-co
 # Source0-md5:	db3990a95d0a9a874e798f305c91931c
 Source1:	%{name}.conf
 Patch0:		%{name}-apxs.patch
+Patch1:		%{name}-libtool.patch
 URL:		http://tomcat.apache.org/connectors-doc/
 BuildRequires:	%{apxs}
 BuildRequires:	apache-devel >= 2.2
@@ -42,6 +43,7 @@ Tomcat-Apache obsługującą komunikację między Tomcatem a Apachem.
 %prep
 %setup -q -n tomcat-connectors-%{version}-src
 %patch0 -p1
+%patch1 -p1
 
 %build
 cd native
