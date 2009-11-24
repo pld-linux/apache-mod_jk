@@ -12,6 +12,7 @@ Group:		Networking/Daemons/HTTP
 Source0:	http://www.apache.org/dist/tomcat/tomcat-connectors/jk/source/tomcat-connectors-%{version}-src.tar.gz
 # Source0-md5:	db3990a95d0a9a874e798f305c91931c
 Source1:	%{name}.conf
+Source2:	%{name}-workers.properties
 Patch0:		%{name}-apxs.patch
 Patch1:		%{name}-libtool.patch
 URL:		http://tomcat.apache.org/connectors-doc/
@@ -29,7 +30,7 @@ Obsoletes:	jakarta-tomcat-connectors-jk
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_pkglibdir	%(%{apxs} -q LIBEXECDIR 2>/dev/null)
-%define		_sysconfdir	%(%{apxs} -q SYSCONFDIR 2>/dev/null)/conf.d
+%define		_sysconfdir	%(%{apxs} -q SYSCONFDIR 2>/dev/null)
 
 %description
 JK is a replacement to the elderly mod_jserv. It was a completely new
@@ -59,12 +60,13 @@ cd native
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir},/var/{lock/mod_jk,log/httpd}}
+install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir}/conf.d,/var/{lock/mod_jk,log/httpd}}
 
 %{__make} -C native install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/80_mod_jk.conf
+install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/conf.d/80_mod_jk.conf
+install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/workers.properties
 touch $RPM_BUILD_ROOT/var/log/httpd/mod_jk.log
 
 %clean
@@ -86,7 +88,8 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc native/{README.txt,CHANGES,NEWS}
-%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/*_mod_%{mod_name}.conf
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/conf.d/*_mod_%{mod_name}.conf
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/workers.properties
 %attr(755,root,root) %{_pkglibdir}/*.so
 %attr(770,root,http) /var/lock/mod_jk
 %attr(640,root,logs) %ghost /var/log/httpd/mod_jk.log
