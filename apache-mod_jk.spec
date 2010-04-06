@@ -5,18 +5,17 @@
 Summary:	Apache module that handles communication between Tomcat and Apache
 Summary(pl.UTF-8):	Moduł Apache'a obsługujący komunikację między Tomcatem a Apachem
 Name:		apache-mod_%{mod_name}
-Version:	1.2.28
-Release:	2
+Version:	1.2.30
+Release:	1
 License:	Apache v2.0
 Group:		Networking/Daemons/HTTP
 Source0:	http://www.apache.org/dist/tomcat/tomcat-connectors/jk/source/tomcat-connectors-%{version}-src.tar.gz
-# Source0-md5:	db3990a95d0a9a874e798f305c91931c
+# Source0-md5:	e6504ce44628ca18deaa503cbc77f545
 Source1:	%{name}.conf
 Source2:	%{name}-workers.properties
 Patch0:		%{name}-apxs.patch
 Patch1:		%{name}-libtool.patch
 URL:		http://tomcat.apache.org/connectors-doc/
-BuildRequires:	%{apxs}
 BuildRequires:	apache-devel >= 2.2
 BuildRequires:	autoconf
 BuildRequires:	automake
