@@ -5,12 +5,12 @@
 Summary:	Apache module that handles communication between Tomcat and Apache
 Summary(pl.UTF-8):	Moduł Apache'a obsługujący komunikację między Tomcatem a Apachem
 Name:		apache-mod_%{mod_name}
-Version:	1.2.31
+Version:	1.2.32
 Release:	1
 License:	Apache v2.0
 Group:		Networking/Daemons/HTTP
-Source0:	http://www.apache.org/dist/tomcat/tomcat-connectors/jk/source/tomcat-connectors-%{version}-src.tar.gz
-# Source0-md5:	6f448124d28fc37bb950ba562a84da34
+Source0:	http://www.apache.org/dist/tomcat/tomcat-connectors/jk/tomcat-connectors-%{version}-src.tar.gz
+# Source0-md5:	8d2a844fe70c849e35ae6b7a3cf4fdfd
 Source1:	%{name}.conf
 Source2:	%{name}-workers.properties
 Patch0:		%{name}-apxs.patch
@@ -64,8 +64,8 @@ install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir}/conf.d,/var/{lock/mod_jk
 %{__make} -C native install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/conf.d/80_mod_jk.conf
-install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/workers.properties
+cp -p %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/conf.d/80_mod_jk.conf
+cp -p %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/workers.properties
 touch $RPM_BUILD_ROOT/var/log/httpd/mod_jk.log
 
 %clean
@@ -86,7 +86,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc native/{README.txt,CHANGES,NEWS}
+%doc native/{README.txt,CHANGES,NEWS} conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/conf.d/*_mod_%{mod_name}.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/workers.properties
 %attr(755,root,root) %{_pkglibdir}/*.so
