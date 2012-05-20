@@ -5,12 +5,12 @@
 Summary:	Apache module that handles communication between Tomcat and Apache
 Summary(pl.UTF-8):	Moduł Apache'a obsługujący komunikację między Tomcatem a Apachem
 Name:		apache-mod_%{mod_name}
-Version:	1.2.32
+Version:	1.2.36
 Release:	1
 License:	Apache v2.0
 Group:		Networking/Daemons/HTTP
 Source0:	http://www.apache.org/dist/tomcat/tomcat-connectors/jk/tomcat-connectors-%{version}-src.tar.gz
-# Source0-md5:	8d2a844fe70c849e35ae6b7a3cf4fdfd
+# Source0-md5:	04152579257d481bcb1660ca7a93327a
 Source1:	%{name}.conf
 Source2:	%{name}-workers.properties
 Patch0:		%{name}-apxs.patch
@@ -53,14 +53,12 @@ cd native
 %{__automake}
 %{__autoconf}
 %configure \
-	--with-apxs=%{apxs} \
-	--with-java-home="%{java_home}"
+	--with-apxs=%{apxs}
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir}/conf.d,/var/{lock/mod_jk,log/httpd}}
-
 %{__make} -C native install \
 	DESTDIR=$RPM_BUILD_ROOT
 
@@ -86,7 +84,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc native/{README.txt,CHANGES,NEWS} conf
+%doc native/{README.txt,STATUS.txt,TODO.txt} conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/conf.d/*_mod_%{mod_name}.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/workers.properties
 %attr(755,root,root) %{_pkglibdir}/*.so
