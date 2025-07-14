@@ -42,8 +42,8 @@ Tomcat-Apache obsługującą komunikację między Tomcatem a Apachem.
 
 %prep
 %setup -q -n tomcat-connectors-%{version}-src
-%patch0 -p1
-%patch1 -p1
+%patch -P0 -p1
+%patch -P1 -p1
 
 %build
 cd native
